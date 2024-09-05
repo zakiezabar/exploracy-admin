@@ -1,0 +1,161 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "darwin", "darwin-arm64"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  image           String?
+  hashedPassword  String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  favoriteIds     String[]  @db.ObjectId
+  coverImage      String?
+  profileImage    String?
+  hasNotification Boolean?
+  points          Int?
+
+  role      Role     @default(USER)
+  accounts     Account[]
+  listings     Listing[]
+  reservations Reservation[]
+  post         Post[]
+  comment      Comment[]
+
+  notification Notification[]
+  badge        Badge[]
+  point        Point[]
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Listing {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  description     String
+  imageSrc        String
+  createdAt       DateTime @default(now())
+  category        String
+  guestCount      Int
+  locationValue   String
+  locationDetails String?
+  highlight       String?
+  whatsIncluded   String?
+  requirement     String?
+  difficulty      String?
+  userId          String   @db.ObjectId
+  price           Int
+  public          Boolean  @default(false)
+  approved        Boolean  @default(false)
+  capacityLimit   Int?
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reservations Reservation[]
+  comment      Comment[]
+  points       Point[]
+}
+
+model Reservation {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  listingId  String   @db.ObjectId
+  startDate  DateTime
+  endDate    DateTime
+  totalPrice Int
+  createdAt  DateTime @default(now())
+  
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+model Badge {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  badgeName String
+  userId    String   @db.ObjectId
+  earnedAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Point {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  badgeName String
+  listingId String   @db.ObjectId
+  userId    String   @db.ObjectId
+  earnedAt  DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+model Post {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @db.ObjectId
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  comments Comment[]
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @db.ObjectId
+  postId    String   @db.ObjectId
+  listingId String   @db.ObjectId
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post    Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  body      String
+  userId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
