@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Heading from '@/components/ui/heading';
 import Modal from '@/components/ui/modal';
-import EditListing from './editListing/[id]/page';
+// import EditListing from './editListing/[id]/page';
+import EditListingForm from '@/components/edit-listing-form';
 
 // Define the Listing type based on your Prisma schema
 interface Listing {
@@ -328,7 +329,7 @@ const ListingPage = () => {
           title="Edit Listing"
           isOpen={isModalOpen}
           onClose={handleCloseModal}
-          body={<EditListing id={editingListingId} />}
+          body={<EditListingForm id={editingListingId} onClose={handleCloseModal} />}
           fullscreen={true}
         />
       )}

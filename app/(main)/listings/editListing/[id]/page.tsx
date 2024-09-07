@@ -6,11 +6,15 @@ import Heading from '@/components/ui/heading';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-interface EditListingProps {
-  id: string;
-}
+// interface EditListingProps {
+//   id: string;
+// }
 
-const EditListing: React.FC<EditListingProps> = ({ id }) => {
+// const EditListing: React.FC<EditListingProps> = ({ id }) => {
+
+  const EditListing: React.FC = () => {
+    // Get the ID from the URL parameters
+    const { id } = useParams();
   // State variables for form fields
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');

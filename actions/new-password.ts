@@ -16,6 +16,7 @@ export const newPassword = async (
     return { error: "Token is missing" };
   }
 
+  // Validate input fields using Zod schema
   const validatedFields = NewPasswordSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -24,24 +25,28 @@ export const newPassword = async (
 
   const { password } = validatedFields.data;
 
+  // Fetch the password reset token from the database
   const existingToken = await getPasswordResetTokenByToken(token);
 
   if (!existingToken) {
     return { error: "Invalid token!" };
   }
 
+  // Check if the token has expired
   const hasExpired = new Date(existingToken.expires) < new Date();
 
   if (hasExpired) {
     return { error: "Token has expired!" };
   }
 
+  // Fetch the user associated with the token's email
   const existingUser = await getUserByEmail(existingToken.email);
 
   if (!existingUser) {
     return { error: "User does not exist!" };
   }
 
+  // Hash the new password using bcrypt
   const hashedPassword = await bcrypt.hash(password, 10);
 
   await db.user.update({

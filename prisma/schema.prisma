@@ -44,6 +44,10 @@ model User {
   notification Notification[]
   badge        Badge[]
   point        Point[]
+
+  passwordResetTokens PasswordResetToken[]
+
+  verificationTokens VerificationToken[]
 }
 
 model Account {
@@ -156,6 +160,25 @@ model Notification {
   body      String
   userId    String   @db.ObjectId
   createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PasswordResetToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId // Correct the ID type for MongoDB
+  email     String
+  token     String
+  expires   DateTime
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId
+}
+
+model VerificationToken {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId // MongoDB-specific ID type
+  email     String
+  token     String
+  expires   DateTime
+  userId    String   @db.ObjectId
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

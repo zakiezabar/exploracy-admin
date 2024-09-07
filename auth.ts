@@ -4,7 +4,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "@/lib/db";
 import authConfig from "@/auth.config";
 import { getUserById } from "@/data/user";
-import { UserRole } from "@prisma/client";
+import { Role } from "@prisma/client";
 // import GitHub from "next-auth/providers/github"
 // import Google from "next-auth/providers/google"
  
@@ -54,7 +54,7 @@ export const {
       }
 
       if (token.role && session.user) {
-        session.user.role = token.role as UserRole;
+        session.user.role = token.role as Role;
       }
 
       if (session.user) {
