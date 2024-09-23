@@ -10,11 +10,8 @@ export default async function IndexPage({
 }) {
   const search = searchParams.q ?? '';
   const offset = searchParams.offset ?? 0;
-
-  console.log('Search Params:', searchParams); // CHECKING
   
   const { users, newOffset } = await getUsers(search, Number(offset));
-  console.log('Fetched Users:', users); // CHECKING
 
   
 

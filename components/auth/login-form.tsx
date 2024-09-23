@@ -23,7 +23,7 @@ import { FormSuccess } from "@/components/form-success";
 import { login } from "@/actions/login";
 import Link from "next/link";
 
-interface LoginResponse { // Change 1: Define LoginResponse interface
+interface LoginResponse {
   error?: string;
   success?: string;
 }
@@ -52,36 +52,27 @@ export const LoginForm = () => {
 
     startTransition(() => {
       login(values)
-        .then((data) => {
-          setError(data?.error);
-          setSuccess(data?.success);
+        .then((data: LoginResponse) => {  // Use LoginResponse type here
+          if (data.error) {
+            setError(data.error);
+            setSuccess("");  // Clear success if there's an error
+          } else {
+            setSuccess(data.success);
+            setError("");  // Clear error if login is successful
+          }
         })
-        // .then((data: LoginResponse) => { // Change 2: Add type annotation for data
-        //   if (data.error) { // Change 3: Check if data.error exists
-        //     setError(data.error);
-        //     setSuccess(""); // Change 4: Clear success if there's an error
-        //   } else {
-        //     setSuccess(data.success);
-        //     setError(""); // Change 5: Clear error if login is successful
-        //   }
-        // })
-        // .catch((err) => {
-        //   setError("An unexpected error occurred.");
-        //   setSuccess(""); // Change 6: Clear success if there's an unexpected error
-        //   console.error(err);
-        // });
+        .catch((err) => {
+          setError("An unexpected error occurred.");
+          setSuccess("");  // Clear success if there's an unexpected error
+          console.error(err);
+        });
     });
   };
 
   return (
-    <CardWrapper
-      headerLabel="Please login to access to the dashboard."
-    >
+    <CardWrapper headerLabel="Please login to access to the dashboard.">
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
             <FormField
               control={form.control}
@@ -121,19 +112,16 @@ export const LoginForm = () => {
                     asChild
                     className="px-0 font-normal"
                   >
-                    <Link href="/reset">
-                      Forgot password?
-                    </Link>
+                    <Link href="/reset">Forgot password?</Link>
                   </Button>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
           </div>
-          <FormError message={error || urlError}/>
-          <FormSuccess message={success}/>
-          <Button 
+          <FormError message={error || urlError} />
+          <FormSuccess message={success} />
+          <Button
             disabled={isPending}
             type="submit"
             className="w-full"
@@ -144,5 +132,5 @@ export const LoginForm = () => {
         </form>
       </Form>
     </CardWrapper>
-  )
-}
+  );
+};

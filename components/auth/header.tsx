@@ -9,7 +9,7 @@ const font = Nunito({
 
 interface HeaderProps {
   label: string;
-};
+}
 
 export const Header = ({
   label,

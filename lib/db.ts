@@ -1,7 +1,23 @@
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+// Extend the global object to include the `prisma` property
+declare global {
+  // Use `var` in the global declaration to avoid TypeScript errors
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined;
+}
 
+// Initialize PrismaClient
+const prisma = globalThis.prisma ?? new PrismaClient();
+
+// Ensure we reuse the PrismaClient instance in development to prevent multiple instances
+if (process.env.NODE_ENV === 'development') {
+  globalThis.prisma = prisma;
+}
+
+export { prisma as db };
+
+// Function to fetch users with search and pagination
 export async function getUsers(search: string, offset: number) {
   const users = await prisma.user.findMany({
     where: {
@@ -89,14 +105,14 @@ export async function getListings(search: string, offset: number) {
   return { listings: formattedListings, newOffset };
 }
 
-declare global {
-  var prisma: PrismaClient | undefined
-}
+// declare global {
+//   var prisma: PrismaClient | undefined
+// }
 
-const client = globalThis.prisma || new PrismaClient()
-if (process.env.NODE_ENV != 'development') globalThis.prisma = client
+// const client = globalThis.prisma || new PrismaClient()
+// if (process.env.NODE_ENV != 'development') globalThis.prisma = client
 
-export { prisma as db };
+// export { prisma as db };
 
 // import { PrismaClient } from "@prisma/client";
 

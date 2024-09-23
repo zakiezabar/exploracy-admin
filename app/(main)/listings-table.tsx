@@ -13,16 +13,13 @@ import { SelectListing } from '@/lib/types';
 import { deleteUser } from '@/actions/deleteUser';
 import { useRouter } from 'next/navigation';
 
-export function ListingsTable({
-  listings,
-  offset
-}: {
-  listings: SelectListing[] | null | any;
+interface ListingsTableProps {
+  listings: SelectListing[] | null; // Proper type for listings
   offset: number | null;
-}) {
-  const router = useRouter();
+}
 
-  console.log('Users Table Props:', { listings, offset }); // Debugging log
+export function ListingsTable({ listings, offset }: ListingsTableProps) {
+  const router = useRouter();
 
   function onClick() {
     router.replace(`/?offset=${offset}`);
@@ -44,8 +41,8 @@ export function ListingsTable({
           </TableHeader>
           <TableBody>
             {listings && listings.length > 0 ? (
-              listings.map((user:any) => (
-                <ListingRow key={listings.id} listing={listings} />
+              listings.map((listing: SelectListing) => ( // Use proper type for `listing`
+                <ListingRow key={listing.id} listing={listing} /> // Correct key and listing prop
               ))
             ) : (
               <TableRow>
@@ -72,7 +69,11 @@ export function ListingsTable({
   );
 }
 
-function ListingRow({ listing }: { listing: SelectListing }) {
+interface ListingRowProps {
+  listing: SelectListing; // Proper type for listing prop
+}
+
+function ListingRow({ listing }: ListingRowProps) {
   const router = useRouter();
 
   async function handleDelete() {
@@ -80,15 +81,9 @@ function ListingRow({ listing }: { listing: SelectListing }) {
       await deleteUser(listing.id);
       router.refresh();
     } catch (error) {
-      console.error("Failed to delete user", error);
+      // console.error("Failed to delete user", error);
     }
   }
-
-  console.log('Rendering UserRow for:', listing); // Debugging log
-
-  // const formattedDate = new Intl.DateTimeFormat('en-US', {
-  //   dateStyle: 'medium'
-  // }).format(new Date(listing.createdAt));
 
   return (
     <TableRow>
@@ -107,4 +102,4 @@ function ListingRow({ listing }: { listing: SelectListing }) {
       </TableCell>
     </TableRow>
   );
-};
+}

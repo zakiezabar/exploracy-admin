@@ -24,10 +24,10 @@ const EditListingForm: React.FC<EditListingFormProps> = ({ id, onClose }) => {
           setDescription(data.description);
           setPrice(data.price);
         } else {
-          console.error('Failed to fetch listing details');
+          // console.error('Failed to fetch listing details');
         }
       } catch (error) {
-        console.error('An error occurred', error);
+        // console.error('An error occurred', error);
       }
     };
 
@@ -51,10 +51,10 @@ const EditListingForm: React.FC<EditListingFormProps> = ({ id, onClose }) => {
       if (response.ok) {
         onClose(); // Close the modal on success
       } else {
-        console.error('Failed to update listing');
+        // console.error('Failed to update listing');
       }
     } catch (error) {
-      console.error('An error occurred', error);
+      // console.error('An error occurred', error);
     }
   };
 

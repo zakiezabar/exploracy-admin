@@ -7,6 +7,7 @@ import Heading from '@/components/ui/heading';
 import Modal from '@/components/ui/modal';
 // import EditListing from './editListing/[id]/page';
 import EditListingForm from '@/components/edit-listing-form';
+import Image from 'next/image';
 
 // Define the Listing type based on your Prisma schema
 interface Listing {
@@ -31,7 +32,7 @@ const truncateDescription = (description: string, wordLimit: number = 30) => {
 const ListingPage = () => {
   const [listings, setListings] = useState<Listing[]>([]);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
-  const [filter, setFilter] = useState<'all' | 'public' | 'private'>('all');
+  const [filter] = useState<'all' | 'public' | 'private'>('all');
   const [approvalFilter, setApprovalFilter] = useState<'all' | 'approved' | 'unapproved'>('all');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingListingId, seEditingListingId] = useState<string | null>(null);
@@ -45,7 +46,7 @@ const ListingPage = () => {
         const data = await response.json();
         setListings(data);
       } catch (error) {
-        console.error('Failed to fetch listings', error);
+        // console.error('Failed to fetch listings', error);
       }
     };
 
@@ -63,10 +64,10 @@ const ListingPage = () => {
         // Remove the deleted listing from the state
         setListings((prevListings) => prevListings.filter((listing) => listing.id !== id));
       } else {
-        console.error('Failed to delete listing');
+        // console.error('Failed to delete listing');
       }
     } catch (error) {
-      console.error('An error occurred', error);
+      // console.error('An error occurred', error);
     } finally {
       setIsDeleting(null);
     }
@@ -107,10 +108,10 @@ const ListingPage = () => {
           )
         );
       } else {
-        console.error('Failed to approve listing');
+        // console.error('Failed to approve listing');
       }
     } catch (error) {
-      console.error('An error occurred', error);
+      // console.error('An error occurred', error);
     }
   };
 
@@ -128,10 +129,10 @@ const ListingPage = () => {
           )
         );
       } else {
-        console.error('Failed to unapprove listing');
+        // console.error('Failed to unapprove listing');
       }
     } catch (error) {
-      console.error('An error occurred', error);
+      // console.error('An error occurred', error);
     }
   };
 
@@ -166,27 +167,24 @@ const ListingPage = () => {
   };
 
   // Handle submit from modal
-  const handleSubmit = async () => {
-    // You can use the same logic from EditListing to submit the form
-    // Here we assume you have the form data available (e.g., from state or refs)
-    // Example:
-    const response = await fetch(`/api/listings/${editingListingId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        // Include your form data here
-      }),
-    });
-    if (response.ok) {
-      // Close the modal and refresh the listings or update the state
-      setIsModalOpen(false);
-      // Fetch listings again or update the state with the new data
-    } else {
-      console.error('Failed to update listing');
-    }
-  };
+  // const handleSubmit = async () => {
+  //   const response = await fetch(`/api/listings/${editingListingId}`, {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       // Include your form data here
+  //     }),
+  //   });
+  //   if (response.ok) {
+  //     // Close the modal and refresh the listings or update the state
+  //     setIsModalOpen(false);
+  //     // Fetch listings again or update the state with the new data
+  //   } else {
+  //     // console.error('Failed to update listing');
+  //   }
+  // };
   
   return (
     <div className="w-full flex flex-1 flex-col p-4 md:p-6">
@@ -255,8 +253,6 @@ const ListingPage = () => {
           Private
         </Button>
       </div> */}
-
-      
       
       <ul className="space-y-2">
         {filteredListings.map((listing) => (
@@ -264,10 +260,12 @@ const ListingPage = () => {
             <div className='flex flex-row gap-4'>
               <div className="rounded-md w-24 h-24">
                 {listing.imageSrc && (
-                  <img
+                  <Image
                     src={listing.imageSrc}
                     alt={listing.title}
-                    className="rounded-lg size-full object-cover"
+                    className="rounded-lg object-cover"
+                    width={800} // Replace with actual width
+                    height={800} // Replace with actual height
                   />
                 )}
               </div>

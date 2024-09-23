@@ -39,7 +39,7 @@ const CreateListing = () => {
         const data = await response.json();
         setCategories(data);
       } catch (error) {
-        console.error('Failed to fetch categories', error);
+        // console.error('Failed to fetch categories', error);
       }
     };
 
@@ -55,7 +55,7 @@ const CreateListing = () => {
       const users: User[] = await response.json();
       setUserOptions(users.map(user => ({ label: user.name, value: user.id })));
     } catch (error) {
-      console.error('Error fetching user options:', error);
+      // console.error('Error fetching user options:', error);
     }
   }, 300);
 
@@ -111,10 +111,10 @@ const CreateListing = () => {
       if (response.ok) {
         router.push('/dashboard');
       } else {
-        console.error('Failed to create listing');
+        // console.error('Failed to create listing');
       }
     } catch (error) {
-      console.error('An error occurred', error);
+      // console.error('An error occurred', error);
     } finally {
       setUploading(false);
     }

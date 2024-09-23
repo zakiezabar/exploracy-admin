@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Listing not found' }, { status: 404 });
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return NextResponse.json({ error: 'Unable to fetch listing' }, { status: 500 });
   }
 }
@@ -59,7 +59,7 @@ export async function PUT(request: NextRequest) {
     });
     return NextResponse.json(updatedListing);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return NextResponse.json({ error: 'Unable to update listing' }, { status: 500 });
   }
 }
@@ -79,7 +79,7 @@ export async function DELETE(request: NextRequest) {
     });
     return NextResponse.json(deletedListing);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return NextResponse.json({ error: 'Unable to delete listing' }, { status: 500 });
   }
 }

@@ -1,8 +1,5 @@
 import WelcomeMessage from "@/components/welcomeMessage";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import Image from "next/image";
-import Input from "../../components/inputs/Input";
 import { LoginForm } from "@/components/auth/login-form";
 
 export default function Home() {

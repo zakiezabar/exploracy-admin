@@ -26,7 +26,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(users);
   } catch (error) {
-    console.error('Error fetching users:', error);
+    // console.error('Error fetching users:', error);
     return NextResponse.json({ error: 'Unable to fetch users' }, { status: 500 });
   }
 }
@@ -48,7 +48,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ message: 'User deleted successfully', user: deletedUser });
   } catch (error) {
-    console.error('Error deleting user:', error);
+    // console.error('Error deleting user:', error);
     return NextResponse.json({ error: 'Unable to delete user' }, { status: 500 });
   }
 }

@@ -1,11 +1,10 @@
 "use client";
 
 import { SidebarItem } from "@/app/components/sidebar/sidebar-items";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import {
   LuUserSquare,
   LuTent, 
@@ -18,8 +17,7 @@ import {
   LuFileLock,
   
 } from "react-icons/lu";
-import { logout } from "@/actions/logout";
-import { signOut } from "next-auth/react";
+// import { signOut } from "next-auth/react";
 import { UserButton } from "@/components/auth/user-button";
 
 // export const SideBar = () => {
@@ -38,11 +36,11 @@ type Props = {
 
 export const SideBar = ({ className }: Props) => {
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  const onClick =  async () => {
-    await signOut();
-  }
+  // const onClick =  async () => {
+  //   await signOut();
+  // }
 
   return (
     <div className={cn(

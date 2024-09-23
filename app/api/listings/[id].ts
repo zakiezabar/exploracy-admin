@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // Respond with the updated listing and a 200 status code
       res.status(200).json(updatedListing);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       // Respond with a 500 status code if an error occurs
       res.status(500).json({ error: 'Unable to update listing' });
     }
@@ -51,7 +51,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // Respond with the deleted listing and a 200 status code
       res.status(200).json(deletedListing);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       // Respond with a 500 status code if an error occurs
       res.status(500).json({ error: 'Unable to delete listing' });
     }

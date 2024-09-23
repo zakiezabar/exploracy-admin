@@ -8,7 +8,7 @@ import { FormError } from "@/components/form-error";
 interface RoleGateProps {
   children: React.ReactNode;
   allowedRole: Role;
-};
+}
 
 export const RoleGate = ({
   children,

@@ -3,7 +3,7 @@ import { SideBar } from "./_components/sidebar";
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
-};
+}
 
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   return (

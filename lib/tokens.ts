@@ -8,6 +8,15 @@ export const generatePasswordResetToken = async (email: string) => {
   const token = uuidv4();
   const expires = new Date(new Date().getTime() + 3600 * 1000); // 1 hour
 
+  // Fetch the user by email to get the userId
+  const user = await db.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
   const existingToken = await getPasswordResetTokenByEmail(email);
 
   if (existingToken) {
@@ -16,11 +25,14 @@ export const generatePasswordResetToken = async (email: string) => {
     });
   }
 
+  // Use userId when creating the password reset token
+  
   const passwordResetToken = await db.passwordResetToken.create({
     data: {
       email,
       token,
       expires,
+      userId: user.id,
     }
   });
 
@@ -30,6 +42,15 @@ export const generatePasswordResetToken = async (email: string) => {
 export const generateVerificationToken = async (email: string) => {
   const token = uuidv4();
   const expires = new Date(new Date().getTime() + 3600 * 1000); // 1 hour
+
+  // Fetch the user by email to get the userId
+  const user = await db.user.findUnique({
+    where: { email },
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
 
   const existingToken = await getVerificationTokenByEmail(email);
 
@@ -46,6 +67,7 @@ export const generateVerificationToken = async (email: string) => {
       email,
       token,
       expires,
+      userId: user.id,
     }
   });
 

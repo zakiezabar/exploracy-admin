@@ -15,7 +15,7 @@ export async function deleteUser(id: string) {
 
     return await response.json(); // Return the response data
   } catch (error) {
-    console.error('Error deleting user:', error);
+    // console.error('Error deleting user:', error);
     throw error; // Re-throw the error to be handled by the calling function
   }
 }

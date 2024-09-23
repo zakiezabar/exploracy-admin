@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import Heading from '@/components/ui/heading';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
@@ -38,7 +37,7 @@ import { Button } from '@/components/ui/button';
           const response = await fetch(`/api/listings/${id}`);
           if (response.ok) {
             const data = await response.json();
-            console.log('Fetched data:', data); // Debug: Log the fetched data
+            // console.log('Fetched data:', data); // Debug: Log the fetched data
             setTitle(data.title);
             setDescription(data.description);
             setPrice(data.price);
@@ -48,10 +47,10 @@ import { Button } from '@/components/ui/button';
             setLocationValue(data.locationValue);
             setUserId(data.userId); // Pre-fill the user ID
           } else {
-            console.error('Failed to fetch listing details');
+            // console.error('Failed to fetch listing details');
           }
         } catch (error) {
-          console.error('An error occurred', error);
+          // console.error('An error occurred', error);
         }
       }
     };
@@ -63,7 +62,7 @@ import { Button } from '@/components/ui/button';
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!id) {
-      console.error('Listing ID is missing');
+      // console.error('Listing ID is missing');
       return;
     }
 
@@ -89,10 +88,10 @@ import { Button } from '@/components/ui/button';
         // Close the modal and refresh the listings
         router.push('/listings');
       } else {
-        console.error('Failed to update listing');
+        // console.error('Failed to update listing');
       }
     } catch (error) {
-      console.error('An error occurred', error);
+      // console.error('An error occurred', error);
     }
   };
 

@@ -25,7 +25,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
 
     return NextResponse.json(updatedListing);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return NextResponse.json({ error: 'Unable to approve listing' }, { status: 500 });
   }
 }

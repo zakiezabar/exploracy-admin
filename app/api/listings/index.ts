@@ -34,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // Respond with the created listing and a 201 status code
       res.status(201).json(newListing);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       // Respond with a 500 status code if an error occurs
       res.status(500).json({ error: 'Unable to create listing' });
     }
@@ -49,7 +49,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // Respond with the fetched listings and a 200 status code
       res.status(200).json(listings);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       // Respond with a 500 status code if an error occurs
       res.status(500).json({ error: 'Unable to fetch listings' });
     }

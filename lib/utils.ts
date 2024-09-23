@@ -5,8 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-import { format } from 'date-fns';
-
 export const getTimeOfDay = (): string => {
   const hour = new Date().getHours();
   if (hour < 12) {

@@ -1,19 +1,18 @@
-// Import the PrismaClient class from the Prisma Client package
 import { PrismaClient } from '@prisma/client';
 
-// Declare a PrismaClient instance
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+
 let prisma: PrismaClient;
 
-// Check if the environment is production
 if (process.env.NODE_ENV === 'production') {
-  prisma = new PrismaClient(); // Create a new PrismaClient instance in production
+  // In production, create a new PrismaClient instance
+  prisma = new PrismaClient();
 } else {
-  // Prevent multiple instances of PrismaClient in development
-  if (!(global as any).prisma) {
-    (global as any).prisma = new PrismaClient();
+  // In development, reuse the PrismaClient instance across hot-reloads
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = new PrismaClient();
   }
-  prisma = (global as any).prisma;
+  prisma = globalForPrisma.prisma;
 }
 
-// Export the PrismaClient instance
 export default prisma;

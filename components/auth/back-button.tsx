@@ -6,7 +6,7 @@ import Link from "next/link";
 interface BackButtonProps {
   href: string;
   label: string;
-};
+}
 
 export const BackButton = ({
   href,

@@ -9,21 +9,17 @@ import {
   Table
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { SelectUser } from '@/lib/types';
+import { SelectUser } from '@/lib/types';  // Import the correct type
 import { deleteUser } from '@/actions/deleteUser';
 import { useRouter } from 'next/navigation';
 
-export function UsersTable({
-  users,
-  offset
-}: {
-  users: SelectUser[] | null | any;
+interface UsersTableProps {
+  users: SelectUser[] | null;  // Correct type for users prop
   offset: number | null;
-}) {
-  const router = useRouter();
+}
 
-  // Debugging log to check the props
-  console.log('Users Table Props:', { users, offset });
+export function UsersTable({ users, offset }: UsersTableProps) {
+  const router = useRouter();
 
   // Function to handle pagination click
   function onClick() {
@@ -46,7 +42,7 @@ export function UsersTable({
           </TableHeader>
           <TableBody>
             {users && users.length > 0 ? (
-              users.map((user:any) => (
+              users.map((user: SelectUser) => (  // Correct type for user
                 <UserRow key={user.id} user={user} />
               ))
             ) : (
@@ -75,7 +71,11 @@ export function UsersTable({
 }
 
 // Component to render each user row
-function UserRow({ user }: { user: SelectUser }) {
+interface UserRowProps {
+  user: SelectUser;  // Correct type for user prop
+}
+
+function UserRow({ user }: UserRowProps) {
   const router = useRouter();
 
   // Handle the delete action for the user
@@ -84,11 +84,9 @@ function UserRow({ user }: { user: SelectUser }) {
       await deleteUser(user.id);
       router.refresh(); // Refresh the page to reflect changes
     } catch (error) {
-      console.error("Failed to delete user", error);
+      // console.error("Failed to delete user", error);
     }
   }
-
-  console.log('Rendering UserRow for:', user); // Debugging log
 
   // Format the creation date
   const formattedDate = new Intl.DateTimeFormat('en-US', {
@@ -114,4 +112,4 @@ function UserRow({ user }: { user: SelectUser }) {
       </TableCell>
     </TableRow>
   );
-};
+}

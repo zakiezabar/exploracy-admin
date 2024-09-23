@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     });
     return NextResponse.json(listing);
   } catch (error) {
-    console.error('Error creating listing:', error);
+    // console.error('Error creating listing:', error);
     return NextResponse.json({ error: 'Failed to create listing' }, { status: 500 });
   }
 }
@@ -35,7 +35,7 @@ export async function GET() {
     });
     return NextResponse.json(listings);
   } catch (error) {
-    console.error('Error fetching listings:', error);
+    // console.error('Error fetching listings:', error);
     return NextResponse.json({ error: 'Failed to fetch listings' }, { status: 500 });
   }
 }
@@ -55,7 +55,7 @@ export async function DELETE(request: NextRequest) {
     });
     return NextResponse.json(listing);
   } catch (error) {
-    console.error('Error deleting listing:', error);
+    // console.error('Error deleting listing:', error);
     return NextResponse.json({ error: 'Failed to delete listing' }, { status: 500 });
   }
 }
@@ -88,7 +88,7 @@ export async function PATCH(request: NextRequest) {
     });
     return NextResponse.json(listing);
   } catch (error) {
-    console.error('Error updating listing:', error);
+    // console.error('Error updating listing:', error);
     return NextResponse.json({ error: 'Failed to update listing' }, { status: 500 });
   }
 }

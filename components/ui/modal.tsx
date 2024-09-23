@@ -24,12 +24,12 @@ const Modal: React.FC<ModalProps> = ({
   onClose,
   title,
   body,
-  footer,
-  actionLabel,
+  // footer,
+  // actionLabel,
   disabled,
-  onSubmit,
-  secondaryAction,
-  secondaryActionLabel,
+  // onSubmit,
+  // secondaryAction,
+  // secondaryActionLabel,
   fullscreen,
 }) => {
   const [showModal, setShowModal] = useState(isOpen);
@@ -46,19 +46,19 @@ const Modal: React.FC<ModalProps> = ({
     setTimeout(onClose, 300); // Use a timeout to allow for a closing animation
   }, [disabled, onClose]);
 
-  const handleSubmit = useCallback(() => {
-    if (disabled || !onSubmit) {
-      return;
-    }
-    onSubmit();
-  }, [disabled, onSubmit]);
+  // const handleSubmit = useCallback(() => {
+  //   if (disabled || !onSubmit) {
+  //     return;
+  //   }
+  //   onSubmit();
+  // }, [disabled, onSubmit]);
 
-  const handleSecondaryAction = useCallback(() => {
-    if (disabled || !secondaryAction) {
-      return;
-    }
-    secondaryAction();
-  }, [disabled, secondaryAction]);
+  // const handleSecondaryAction = useCallback(() => {
+  //   if (disabled || !secondaryAction) {
+  //     return;
+  //   }
+  //   secondaryAction();
+  // }, [disabled, secondaryAction]);
 
   if (!showModal) {
     return null;
