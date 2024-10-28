@@ -1,15 +1,35 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+// Handles GET requests to fetch users with their points for the leaderboard
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get('q') || '';
-
-  if (!query || query.length < 2) {
-    return NextResponse.json([], { status: 200 });
-  }
+  const showLeaderboard = searchParams.get('leaderboard') === 'true';
 
   try {
+    if (showLeaderboard) {
+      // Fetch users with their points for leaderboard display
+      const users = await prisma.user.findMany({
+        select: {
+          id: true,
+          name: true,
+          points: true,
+        },
+        orderBy: {
+          points: 'desc', // Order users by points in descending order
+        },
+        take: 10, // Limit to top 10 users for the leaderboard
+      });
+
+      return NextResponse.json(users);
+    }
+
+    // Existing search functionality for users by name
+    if (!query || query.length < 2) {
+      return NextResponse.json([], { status: 200 });
+    }
+
     const users = await prisma.user.findMany({
       where: {
         name: {
@@ -26,7 +46,8 @@ export async function GET(request: Request) {
 
     return NextResponse.json(users);
   } catch (error) {
-    // console.error('Error fetching users:', error);
+    // Log the error for debugging purposes
+    console.error('Error fetching users:', error);
     return NextResponse.json({ error: 'Unable to fetch users' }, { status: 500 });
   }
 }
@@ -48,7 +69,8 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ message: 'User deleted successfully', user: deletedUser });
   } catch (error) {
-    // console.error('Error deleting user:', error);
+    // Log the error for debugging purposes
+    console.error('Error deleting user:', error);
     return NextResponse.json({ error: 'Unable to delete user' }, { status: 500 });
   }
 }

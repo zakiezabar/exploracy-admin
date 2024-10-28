@@ -19,6 +19,11 @@ export default auth((req): any => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
+  // Allow access to public API routes like /api/login and /api/auth/[...nextauth]
+  if (nextUrl.pathname === "/api/login" || nextUrl.pathname.startsWith("/api/auth")) {
+    return null; // Do not block these routes with authentication checks
+  }
+
   // Rediect to login if accessing the root path
   if (nextUrl.pathname === "/") {
     return Response.redirect(new URL("/login", nextUrl));

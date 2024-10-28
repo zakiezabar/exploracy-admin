@@ -1,8 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    // Add res.cloudinary.com to the list of allowed domains
-    domains: ['res.cloudinary.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',  // Use 'https' as Cloudinary serves images over HTTPS
+        hostname: 'res.cloudinary.com',  // The hostname of the allowed domain
+        port: '',  // Optional: keep this empty unless you're using a specific port
+        pathname: '/**',  // Allow all paths under the domain
+      },
+    ],
   },
 };
 

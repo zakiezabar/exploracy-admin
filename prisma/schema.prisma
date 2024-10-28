@@ -32,7 +32,7 @@ model User {
   coverImage      String?
   profileImage    String?
   hasNotification Boolean?
-  points          Int?
+  points          Int       @default(0)  // New field to track user points
 
   role      Role     @default(USER)
   accounts     Account[]

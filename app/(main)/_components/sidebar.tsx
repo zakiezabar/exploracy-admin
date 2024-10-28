@@ -72,8 +72,14 @@ export const SideBar = ({ className }: Props) => {
           iconSize={24}
         />
         <SidebarItem
-          label="Badges"
-          href="/badges"
+          label="Booking History"
+          href="/booking-history"
+          iconSrc={LuCalendarCheck}
+          iconSize={24}
+        />
+        <SidebarItem
+          label="Leaderboard"
+          href="/leaderboard"
           iconSrc={LuCrown}
           iconSize={24}
         />
