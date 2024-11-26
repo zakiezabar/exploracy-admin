@@ -8,6 +8,7 @@ import Modal from '@/components/ui/modal';
 // import EditListing from './editListing/[id]/page';
 import EditListingForm from '@/components/edit-listing-form';
 import Image from 'next/image';
+import { toast } from 'react-toastify';
 
 // Define the Listing type based on your Prisma schema
 interface Listing {
@@ -73,68 +74,71 @@ const ListingPage = () => {
     }
   };
 
-  // Handle toggle public status
-  // const handleTogglePublic = async (id: string) => {
+  const toggleApprovalStatus = async (id: string, approved: boolean) => {
+    try {
+      const response = await fetch(`/api/listings/${id}/approve`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ approved }),
+      });
+  
+      if (response.ok) {
+        const updatedListing = await response.json();
+        setListings((prevListings) =>
+          prevListings.map((listing) =>
+            listing.id === id ? { ...listing, approved: updatedListing.approved } : listing
+          )
+        );
+        toast.success(`Listing ${approved ? 'approved' : 'unapproved'} successfully`);
+      } else {
+        toast.error('Failed to update approval status');
+      }
+    } catch (error) {
+      toast.error('An error occurred while updating approval status');
+    }
+  };  
+
+  // Handle approve listing
+  // const handleApproveListing = async (id: string) => {
   //   try {
-  //     const response = await fetch(`/api/listings/${id}/status`, {
+  //     const response = await fetch(`/api/listings/${id}/approve`, {
   //       method: 'PATCH',
   //     });
   //     if (response.ok) {
   //       const updatedListing = await response.json();
   //       setListings((prevListings) =>
   //         prevListings.map((listing) =>
-  //           listing.id === id ? { ...listing, public: updatedListing.public } : listing
+  //           listing.id === id ? { ...listing, approved: updatedListing.approved } : listing
   //         )
   //       );
   //     } else {
-  //       console.error('Failed to update listing status');
+  //       // console.error('Failed to approve listing');
   //     }
   //   } catch (error) {
-  //     console.error('An error occurred', error);
+  //     // console.error('An error occurred', error);
   //   }
   // };
 
-  // Handle approve listing
-  const handleApproveListing = async (id: string) => {
-    try {
-      const response = await fetch(`/api/listings/${id}/approve`, {
-        method: 'PATCH',
-      });
-      if (response.ok) {
-        const updatedListing = await response.json();
-        setListings((prevListings) =>
-          prevListings.map((listing) =>
-            listing.id === id ? { ...listing, approved: updatedListing.approved } : listing
-          )
-        );
-      } else {
-        // console.error('Failed to approve listing');
-      }
-    } catch (error) {
-      // console.error('An error occurred', error);
-    }
-  };
-
   // Handle unapprove listing
-  const handleUnapproveListing = async (id: string) => {
-    try {
-      const response = await fetch(`/api/listings/${id}/unapprove`, {
-        method: 'PATCH',
-      });
-      if (response.ok) {
-        const updatedListing = await response.json();
-        setListings((prevListings) =>
-          prevListings.map((listing) =>
-            listing.id === id ? { ...listing, approved: updatedListing.approved } : listing
-          )
-        );
-      } else {
-        // console.error('Failed to unapprove listing');
-      }
-    } catch (error) {
-      // console.error('An error occurred', error);
-    }
-  };
+  // const handleUnapproveListing = async (id: string) => {
+  //   try {
+  //     const response = await fetch(`/api/listings/${id}/unapprove`, {
+  //       method: 'PATCH',
+  //     });
+  //     if (response.ok) {
+  //       const updatedListing = await response.json();
+  //       setListings((prevListings) =>
+  //         prevListings.map((listing) =>
+  //           listing.id === id ? { ...listing, approved: updatedListing.approved } : listing
+  //         )
+  //       );
+  //     } else {
+  //       // console.error('Failed to unapprove listing');
+  //     }
+  //   } catch (error) {
+  //     // console.error('An error occurred', error);
+  //   }
+  // };
 
   // // Filter listings based on the selected filter
   // const filteredListings = listings.filter((listing) => {
@@ -277,6 +281,9 @@ const ListingPage = () => {
                 
                 <p className="text-md text-gray-700">{truncateDescription(listing.description)}</p>
                 <p className="text-sm text-slate-500">By: {listing.user?.name || 'Unknown'}</p>
+                <p className={`text-sm font-semibold ${listing.approved ? 'text-green-600' : 'text-yellow-500'}`}>
+                  {listing.approved ? 'Approved' : 'Pending Approval'}
+                </p>
                 <div className="mt-4 flex space-x-4 justify-end">
                   <Button
                     onClick={() => handleOpenModal(listing.id)}
@@ -300,7 +307,7 @@ const ListingPage = () => {
                   </Button>
                   {!listing.approved ? (
                   <Button
-                    onClick={() => handleApproveListing(listing.id)}
+                    onClick={() => toggleApprovalStatus(listing.id, true)}
                     variant={'secondary'}
                     size={'sm'}
                   >
@@ -308,7 +315,7 @@ const ListingPage = () => {
                   </Button>
                   ) : (
                     <Button
-                      onClick={() => handleUnapproveListing(listing.id)}
+                      onClick={() => toggleApprovalStatus(listing.id, false)}
                       variant={'secondaryOutline'}
                       size={'sm'}
                     >
