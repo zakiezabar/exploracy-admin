@@ -16,6 +16,7 @@ interface Listing {
   title: string;
   description: string;
   imageSrc: string;
+  category: string;
   public: boolean;
   approved: boolean;
   user?: {
@@ -280,6 +281,7 @@ const ListingPage = () => {
                 </div>
                 
                 <p className="text-md text-gray-700">{truncateDescription(listing.description)}</p>
+                <p className="text-sm text-slate-500">By: {listing.category}</p>
                 <p className="text-sm text-slate-500">By: {listing.user?.name || 'Unknown'}</p>
                 <p className={`text-sm font-semibold ${listing.approved ? 'text-green-600' : 'text-yellow-500'}`}>
                   {listing.approved ? 'Approved' : 'Pending Approval'}
